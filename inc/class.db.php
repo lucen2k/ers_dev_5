@@ -1,12 +1,14 @@
 <?php
-class db extends PDO {
+class db extends PDO 
+{
 	private $error;
 	private $sql;
 	private $bind;
 	private $errorCallbackFunction;
 	private $errorMsgFormat;
 
-	public function __construct($dsn, $user="", $passwd="") {
+	public function __construct($dsn, $user="", $passwd="") 
+	{
 		$options = array(
 			PDO::ATTR_PERSISTENT => true, 
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -19,24 +21,25 @@ class db extends PDO {
 		}
 	}
 
-	private function debug() {
-		if(!empty($this->errorCallbackFunction)) {
+	private function debug() 
+	 {
+		if (!empty($this->errorCallbackFunction)) {
 			$error = array("Error" => $this->error);
-			if(!empty($this->sql))
+			if (!empty($this->sql))
 				$error["SQL Statement"] = $this->sql;
-			if(!empty($this->bind))
+			if (!empty($this->bind))
 				$error["Bind Parameters"] = trim(print_r($this->bind, true));
 
 			$backtrace = debug_backtrace();
-			if(!empty($backtrace)) {
-				foreach($backtrace as $info) {
-					if($info["file"] != __FILE__)
+			if (!empty($backtrace)) {
+				foreach ($backtrace as $info) {
+					if ($info["file"] != __FILE__)
 						$error["Backtrace"] = $info["file"] . " at line " . $info["line"];	
 				}		
 			}
 
 			$msg = "";
-			if($this->errorMsgFormat == "html") {
+			if ($this->errorMsgFormat == "html") {
 				if(!empty($error["Bind Parameters"]))
 					$error["Bind Parameters"] = "<pre>" . $error["Bind Parameters"] . "</pre>";
 				$css = trim(file_get_contents(dirname(__FILE__) . "/error.css"));
@@ -46,7 +49,7 @@ class db extends PDO {
 					$msg .= "\n\t<label>" . $key . ":</label>" . $val;
 				$msg .= "\n\t</div>\n</div>";
 			}
-			elseif($this->errorMsgFormat == "text") {
+			elseif ($this->errorMsgFormat == "text") {
 				$msg .= "SQL Error\n" . str_repeat("-", 50);
 				foreach($error as $key => $val)
 					$msg .= "\n\n$key:\n$val";
@@ -62,13 +65,14 @@ class db extends PDO {
 		$this->run($sql, $bind);
 	}
 
-	private function filter($table, $info) {
+	private function filter($table, $info) 
+	{
 		$driver = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
-		if($driver == 'sqlite') {
+		if ($driver == 'sqlite') {
 			$sql = "PRAGMA table_info('" . $table . "');";
 			$key = "name";
 		}
-		elseif($driver == 'mysql') {
+		elseif ($driver == 'mysql') {
 			$sql = "DESCRIBE " . $table . ";";
 			$key = "Field";
 		}
@@ -77,7 +81,7 @@ class db extends PDO {
 			$key = "column_name";
 		}	
 
-		if(false !== ($list = $this->run($sql))) {
+		if (false !== ($list = $this->run($sql))) {
 			$fields = array();
 			foreach($list as $record)
 				$fields[] = $record[$key];
@@ -86,8 +90,9 @@ class db extends PDO {
 		return array();
 	}
 
-	private function cleanup($bind) {
-		if(!is_array($bind)) {
+	private function cleanup($bind) 
+	{
+		if (!is_array($bind)) {
 			if(!empty($bind))
 				$bind = array($bind);
 			else
@@ -96,26 +101,30 @@ class db extends PDO {
 		return $bind;
 	}
 
-	public function insert($table, $info) {
+	public function insert($table, $info) 
+	 {
+	 	$info = $this->datetimes($table, $info, 'insert');
 		$fields = $this->filter($table, $info);
+
 		$sql = "INSERT INTO " . $table . " (" . implode($fields, ", ") . ") VALUES (:" . implode($fields, ", :") . ");";
 		$bind = array();
-		foreach($fields as $field)
+		foreach ($fields as $field)
 			$bind[":$field"] = $info[$field];
 		return $this->run($sql, $bind);
 	}
 
-	public function run($sql, $bind="") {
+	public function run($sql, $bind="") 
+	{
 		$this->sql = trim($sql);
 		$this->bind = $this->cleanup($bind);
 		$this->error = "";
 
 		try {
 			$pdostmt = $this->prepare($this->sql);
-			if($pdostmt->execute($this->bind) !== false) {
-				if(preg_match("/^(" . implode("|", array("select", "describe", "pragma")) . ") /i", $this->sql))
+			if  ($pdostmt->execute($this->bind) !== false) {
+				if (preg_match("/^(" . implode("|", array("select", "describe", "pragma")) . ") /i", $this->sql))
 					return $pdostmt->fetchAll(PDO::FETCH_ASSOC);
-				elseif(preg_match("/^(" . implode("|", array("delete", "insert", "update")) . ") /i", $this->sql))
+				elseif (preg_match("/^(" . implode("|", array("delete", "insert", "update")) . ") /i", $this->sql))
 					return $pdostmt->rowCount();
 			}	
 		} catch (PDOException $e) {
@@ -125,7 +134,8 @@ class db extends PDO {
 		}
 	}
 
-	public function select($table, $where="", $bind="", $fields="*") {
+	public function select($table, $where="", $bind="", $fields="*") 
+	{
 		$sql = "SELECT " . $fields . " FROM " . $table;
 		if(!empty($where))
 			$sql .= " WHERE " . $where;
@@ -133,25 +143,28 @@ class db extends PDO {
 		return $this->run($sql, $bind);
 	}
 
-	public function setErrorCallbackFunction($errorCallbackFunction, $errorMsgFormat="html") {
+	public function setErrorCallbackFunction($errorCallbackFunction, $errorMsgFormat="html") 
+	{
 		//Variable functions for won't work with language constructs such as echo and print, so these are replaced with print_r.
-		if(in_array(strtolower($errorCallbackFunction), array("echo", "print")))
+		if (in_array(strtolower($errorCallbackFunction), array("echo", "print")))
 			$errorCallbackFunction = "print_r";
 
-		if(function_exists($errorCallbackFunction)) {
+		if (function_exists($errorCallbackFunction)) {
 			$this->errorCallbackFunction = $errorCallbackFunction;	
-			if(!in_array(strtolower($errorMsgFormat), array("html", "text")))
+			if (!in_array(strtolower($errorMsgFormat), array("html", "text")))
 				$errorMsgFormat = "html";
 			$this->errorMsgFormat = $errorMsgFormat;	
 		}	
 	}
 
-	public function update($table, $info, $where, $bind="") {
+	public function update($table, $info, $where, $bind="") 
+	{
+		$info = $this->datetimes($table, $info, 'update');
 		$fields = $this->filter($table, $info);
 		$fieldSize = sizeof($fields);
 
 		$sql = "UPDATE " . $table . " SET ";
-		for($f = 0; $f < $fieldSize; ++$f) {
+		for ($f = 0; $f < $fieldSize; ++$f) {
 			if($f > 0)
 				$sql .= ", ";
 			$sql .= $fields[$f] . " = :update_" . $fields[$f]; 
@@ -159,21 +172,48 @@ class db extends PDO {
 		$sql .= " WHERE " . $where . ";";
 
 		$bind = $this->cleanup($bind);
-		foreach($fields as $field)
+		foreach ($fields as $field)
 			$bind[":update_$field"] = $info[$field];
 		
 		return $this->run($sql, $bind);
 	}
 
+	#- add function -------------------------------------------------
 	public function pager($param)
 	{
-		//echo "["; echo $param->query; echo "]"; //exit;
 		//echo "<pre>"; print_r($param); echo "</pre>"; exit;
 		$limit = " LIMIT ".$param->start.", ".$param->length;
 		$sql = $param->query.$limit;
-		//echo "<pre>"; print_r($sql); echo "</pre>"; exit;
 
 		return $this->run($sql);
 	}
+
+	private function datetimes($table, $info, $mode=null)
+	{
+		if (empty($mode)) {
+			return $info;
+		}
+
+		$sql = "DESCRIBE ".$table;
+		$fields = $this->run($sql);
+
+		$now = date('Y-m-d H:i:s');
+		foreach ($fields as $entry) {
+			if ($entry['Field'] == 'created' && $entry['Type'] == 'datetime' && $mode == 'insert') {
+					$info['created'] = $now;
+			}
+			if ($entry['Field'] == 'modified' && $entry['Type'] == 'datetime') {
+				$info['modified'] = $now;
+			}
+		}
+
+		return $info;
+	}
+
 }	
+
+
+
+
+
 
