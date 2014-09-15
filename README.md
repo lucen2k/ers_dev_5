@@ -16,6 +16,33 @@ define('DATABASE',	'test');
 【初期設置用のSQL】
 /sql/test.sql
 
+【クラスの使い方】
+下のような初期画面に出るリンク「DB Class Discription」と「Other Class Discription」を参照
+<pre>
+debug::
+ERS_Dev Object
+(
+    [version] => ers.dev.v.0.5
+    [date] => 2014.09.12
+    [author] => Lucen(5),Wataru(0)
+    [db_class] => DB Class Discription
+    [other_class] => Other Class Discription
+    [search] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 1
+                    [name] => aaa
+                    [created] => 0000-00-00 00:00:00
+                    [modified] => 0000-00-00 00:00:00
+                )
+
+        )
+
+    [list] => Array
+        (
+            [0] => Array [...]
+</pre>
 
 /**
  *　Version discription list
