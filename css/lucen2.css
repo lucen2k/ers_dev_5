@@ -1,0 +1,130 @@
+body { font : 12px Verdana; font-size: 10pt; color: #666666 }
+ 
+A:link { color:#333333; text-decoration:none; background:url(dot.gif) repeat-x bottom;}
+A:visited { color:#333333; text-decoration:none; background:url(dot.gif) repeat-x bottom;}
+A:active { color:#FF8C00;text-decoration:underline; }
+A:hover { color:#FF8C00;text-decoration:underline; }
+ 
+hr {
+    border: 0;
+    border-bottom: 1px dashed #777;
+    background: #ddd;
+}
+
+h3 {
+  border-left: 10px solid #CC3366;
+  padding-left: 7px;
+}
+
+.lucen {
+	border-collapse: collapse;
+	font-size: 12px;
+	border: 1px solid #cccccc;
+}
+.lucen tr th {
+    background: #f4f4f4;
+	border: 1px solid #cccccc;
+	line-height: 20px;
+	color: #666666;
+	padding-right: 13px;
+	padding-left: 13px;
+	white-space: nowrap;
+}
+.lucen td {
+	border: 1px solid #cccccc;
+	line-height: 20px;
+	color: #666666;
+	padding-right: 13px;
+	padding-left: 13px;
+	white-space: nowrap;
+}
+.lucen tr:hover {
+	background-color: #e5ecff;
+}
+.lucen tr td:hover {
+	background-color: #ccffee;
+}
+.lucen tr.color td {
+    background: #f4f4f4;
+}
+ 
+/* ◆ボーダースタイル「dotted」太さを「2px」◆ */
+#lucen ul { margin: 0; padding :0; list-style-type : none; }
+#lucen li { display : inline; padding :0; margin:0; }
+ 
+#lucen a {
+	display:block; 
+	border:2px dotted #fa0;
+	background-color:#fff;
+	font-size:small;
+	_font-size:x-small;
+	padding:0.1em 0 0.1em 0.5em;
+	text-decoration:none;
+	color:#a70;width:10em; 
+	margin:4px 0px;
+	height:1.5em;
+}
+ 
+#lucen a:hover {
+	display:block; 
+	border:2px dotted #fa0;
+	background-color:#fd8;
+	font-size:small;
+	_font-size:x-small;
+	padding:0.1em 0 0.1em 0.5em;
+	text-decoration:none;
+	color:#a70;
+	width:10em; 
+	margin:4px 0px;
+	height:1.5em
+}
+ 
+#lucen_pt a {
+	display:block; 
+	border:2px dotted #fa0;
+	background-color:#fd8;
+	font-size:small;
+	_font-size:x-small;
+	padding:0.1em 0 0.1em 0.5em;
+	text-decoration:none;
+	color:#a70;
+	width:10em; 
+	margin:4px 0px;
+	height:1.5em
+}
+
+div.pagination {
+	/*
+	padding:3px;
+	margin:3px;
+	text-align:center;
+	*/
+}
+
+div.pagination a {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #ddd;
+	
+	text-decoration: none; 
+	color: #aaa;
+}
+div.pagination a:hover, div.pagination a:active {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #a0a0a0;
+}
+div.pagination span.current {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #e0e0e0;
+	font-weight: bold;
+	background-color: #f0f0f0;
+	color: #aaa;
+}
+div.pagination span.disabled {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #f3f3f3;
+	color: #ccc;
+}
