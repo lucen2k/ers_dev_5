@@ -3,6 +3,20 @@ ers_dev_5
 
 PHPサーバ系開発用のシンプルなフレームワーク
 
+【DB設定】
+/inc/db.inc.php
+<pre>
+#- db info
+define('HOSENAME',	'localhost');
+define('USERNAME',	'test');
+define('PASSWORD',	'pass');
+define('DATABASE',	'test');
+</pre>
+
+【初期設置用のSQL】
+/sql/test.sql
+
+
 /**
  *　Version discription list
  *
