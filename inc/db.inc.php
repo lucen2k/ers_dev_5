@@ -10,9 +10,8 @@ define('PASSWORD',	'pass');
 define('DATABASE',	'test');
 
 #- pager用
-$connect = mysql_connect(HOSENAME, USERNAME, PASSWORD) OR die("Database Error 1");
-mysql_select_db(DATABASE, $connect) OR die("Database Error 2");
-mysql_query("SET NAMES utf8");
+$mysqli = new mysqli(HOSENAME, USERNAME, PASSWORD, DATABASE);
+$mysqli->set_charset("utf8");
 
 #- db connect
 $dsn = 'mysql:host='.HOSENAME.';dbname='.DATABASE.';charset=utf8';

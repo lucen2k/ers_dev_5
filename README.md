@@ -22,9 +22,9 @@ define('DATABASE',	'test');
 debug::
 ERS_Dev Object
 (
-    [version] => ers.dev.v.0.5
+    [version] => ers.dev.v.0.5.1
     [date] => 2014.09.12
-    [author] => Lucen(5),Wataru(0)
+    [author] => Lucen(6)
     [db_class] => DB Class Discription
     [other_class] => Other Class Discription
     [search] => Array
@@ -47,6 +47,9 @@ ERS_Dev Object
 /**
  *　Version discription list
  *
+ * ers.dev.v.0.5.1 - 2020.5.28
+ * @author Lucen(6): PHPバージョンアップによる不具合修正
+ *
  * ers.dev.v.0.5 - 2014.9.14
  * @author Lucen(5): Pager Class追加
  *
@@ -59,6 +62,6 @@ ERS_Dev Object
  * ers.php.v.0.2 - 2014.7.2
  * @author Lucen(2): Debug機能, CSS
  *
- * pod.view.v.0.1 - 2014.7.1 
+ * pod.view.v.0.1 - 2014.7.1
  * @author Lucen(1): DB Class, ControllerとViewを分ける
  */

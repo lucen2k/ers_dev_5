@@ -15,8 +15,8 @@ $bind = array(":search" => "a%");
 $set->search = $db->select('list', 'name LIKE :search', $bind);
 
 #- Pager example of use -------
-$sql = "SELECT * FROM list WHERE 1 ORDER BY id DESC"; 
-$pager = new Pager($sql, PAGER_LIMIT);
+$sql = "SELECT * FROM list WHERE 1 ORDER BY id DESC";
+$pager = new Pager($mysqli, $sql, PAGER_LIMIT);
 //debug($pager);
 
 # list 取得
@@ -24,7 +24,7 @@ $set->list = $db->pager($pager);
 
 # paging
 $set->pager = $pager->show();
- 
+
 #- Insert -------
 $fields = array(
 	'name' => 'LName FName',
