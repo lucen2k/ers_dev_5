@@ -60,12 +60,12 @@ class Pager extends db
 	function doQuery()
 	{
 		$sql = trim($this->sql);
-		$sql = substr($sql,6);
-		$sql = 'SELECT SQL_CALC_FOUND_ROWS '.$sql.' limit '.$this->start.', '.$this->length;
-		$this->result = $this->mysqli->query($sql);
-		$sql = "SELECT FOUND_ROWS()";
+		//rows
 		$result = $this->mysqli->query($sql);
 		$this->rows = mysqli_num_rows($result);
+		//result
+		$sql = $sql.' limit '.$this->start.', '.$this->length;
+		$this->result = $this->mysqli->query($sql);
 	}
 
   	//getvar_val() gets the
